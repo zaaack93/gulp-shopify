@@ -1,23 +1,17 @@
 `use strict`;
 
 const gulp = require(`gulp`);
-const babel = require(`gulp-babel`);
-const autoprefixer = require(`gulp-autoprefixer`);
 const changed = require(`gulp-changed`);
-const cleanCss = require(`gulp-clean-css`);
-const concat = require(`gulp-concat`);
 const rename = require(`gulp-rename`);
-const replace = require(`gulp-replace`);
 const sass = require(`gulp-sass`)(require(`node-sass`));
-const uglify = require(`gulp-uglify`);
 const scssLint = require(`gulp-scss-lint`);
 
 /**
  * Asset paths.
  */
-const srcSCSS = `scss/**/*.scss`;
-const srcJS = `js/*.js`;
-const assetsDir = `../assets/`;
+const srcSCSS = `dev/scss/**/*.scss`;
+const srcJS = `dev/js/*.js`;
+const assetsDir = `./assets/`;
 
 /**
  * Scss lint
@@ -31,16 +25,12 @@ gulp.task(`scss-lint`, () => {
  * SCSS task
  */
 gulp.task(`scss`, gulp.series(`scss-lint`, () => {
-    return gulp.src(`scss/*.scss.liquid`)
-        .pipe(sass({ outputStyle: `expanded` }).on(`error`, sass.logError))
-        .pipe(autoprefixer({ cascade : false }))
+    return gulp.src(`dev/scss/*.scss`)
+        .pipe(sass().on(`error`, sass.logError))
         .pipe(rename((path) => {
             path.basename = path.basename.replace(`.scss`, `.css`)
-            path.extname = `.liquid`;
+            //path.extname = `.liquid`;
         }))
-        .pipe(replace(`"{{`, "{{"))
-        .pipe(replace(`}}"`, "}}"))
-        .pipe(cleanCss())
         .pipe(gulp.dest(assetsDir));
 }));
 
@@ -49,18 +39,13 @@ gulp.task(`scss`, gulp.series(`scss-lint`, () => {
  *
  * Note: use npm to install libraries and add them below, like the babel-polyfill example
  */
-const jsFiles = [
-    `./node_modules/babel-polyfill/dist/polyfill.js`,
-    srcJS,
-];
 
 gulp.task(`js`, () => {
-    return gulp.src(jsFiles)
-        .pipe(babel({
-            presets: [`@babel/env`]
+    return gulp.src(`dev/js/*.js`)
+        .pipe(rename((path) => {
+            path.basename = path.basename
+            //path.extname = `.liquid`;
         }))
-        .pipe(concat(`theme.js`))
-        .pipe(uglify())
         .pipe(gulp.dest(assetsDir));
 });
 
@@ -68,7 +53,7 @@ gulp.task(`js`, () => {
  * Images task
  */
 gulp.task(`images`, () => {
-    return gulp.src(`images/**`)
+    return gulp.src(`dev/images/**`)
         .pipe(changed(assetsDir)) // ignore unchanged files
         .pipe(gulp.dest(assetsDir))
 });
@@ -77,7 +62,7 @@ gulp.task(`images`, () => {
  * Fonts task
  */
 gulp.task(`fonts`, () => {
-    return gulp.src(`fonts/**`)
+    return gulp.src(`dev/fonts/**`)
         .pipe(changed(assetsDir)) // ignore unchanged files
         .pipe(gulp.dest(assetsDir))
 });

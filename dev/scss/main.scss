@@ -1,14 +1,6 @@
 // --------------------------------------------------
-// variables (replace Bootstrap variable defaults)
-
+// variables 
 @import 'partials/variables';
-
-// --------------------------------------------------
-// bootstrap
-
-@import '../node_modules/bootstrap/scss/bootstrap-reboot';
-@import '../node_modules/bootstrap/scss/bootstrap-grid';
-@import '../node_modules/bootstrap/scss/bootstrap-utilities';
 
 // --------------------------------------------------
 // mixins
@@ -25,4 +17,5 @@
 // --------------------------------------------------
 // sections
 
-@import 'sections/main-password';
+// --------------------------------------------------
+// snippets
